@@ -69,7 +69,6 @@ docker-compose up -d --build
 docker-compose down
 ```
 
---
 ## Использование
 
 ### Подключение к базе данных
@@ -82,15 +81,14 @@ docker-compose down
 	•	База данных: `your_database`
 
 ### Загрузка данных из CSV
-	1.	Убедитесь, что файлы CSV находятся в папке csv_data.
-	2.	Используйте SQL-команду COPY для загрузки данных:
 
+1.	Убедитесь, что файлы CSV находятся в папке csv_data.
+2.	Используйте SQL-команду COPY для загрузки данных:
+
+```sql
 COPY ods.flight_statistics (column1, column2, ...)
 FROM '/csv_data/flight_statistics_test_data.csv'
 DELIMITER ','
 CSV HEADER;
+```
 
-TODO
-	•	Автоматизировать загрузку данных в ODS.
-	•	Добавить тестовые запросы для анализа данных.
-	•	Улучшить обработку ошибок при загрузке данных.
