@@ -78,7 +78,7 @@ docker-compose down
 * Порт: `6432`
 * Пользователь: `your_user`
 * Пароль: `your_password`
-* База данных: `your_database`
+* База данных: `dwh_kdz`
 
 ### Загрузка данных из CSV
 
