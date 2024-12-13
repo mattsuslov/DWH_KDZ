@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - "6432:5432" # Прокси порт PostgreSQL
+    environment:
+      POSTGRES_USER: matt # Имя пользователя для PostgreSQL
+      POSTGRES_PASSWORD: pass # Пароль для PostgreSQL
+      POSTGRES_DB: dwh_kdz # Имя создаваемой базы данных
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data # Сохранение данных между запусками контейнера
+      - ./csv_data:/csv_data
+  
