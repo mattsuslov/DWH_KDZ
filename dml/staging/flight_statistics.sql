@@ -4,7 +4,23 @@ WITH dedubl_cte AS (
         SELECT
             *,
             CASE WHEN ROW_NUMBER() OVER (
-                PARTITION BY year, flight_date, flight_number_reporting_airline, origin_airport, dest_airport
+                PARTITION BY year,
+						    quarter,
+						    month,
+						    fl_date,
+						    op_unique_carrier,
+						    tail_num,
+						    op_carrier_fl_num,
+						    origin_airport_id,
+						    dest_airport_id,
+						    crs_dep_time,
+						    dep_time,
+						    dep_delay_new,
+						    cancelled,
+						    cancellation_code,
+						    air_time,
+						    distance,
+						    weather_delay
                 ORDER BY tech_created DESC
             ) > 1 THEN TRUE ELSE FALSE END AS is_duplicate
         FROM ods.flight_statistics
@@ -14,36 +30,46 @@ WITH dedubl_cte AS (
 , cleared_cte AS (
     SELECT * FROM dedubl_cte
     WHERE 1=1
-        AND dep_delay_minutes >= -100 
+        AND dep_delay_new >= -100 
         AND distance >= 0
 )
 --приведение данных и вставка
 INSERT INTO stg.flight_statistics
 (
-"year"
-, "quarter"
-, "month"
-, flight_date
-, reporting_airline
-, airline_tail_number
-, airplane_id, flight_number_reporting_airline
-, origin_airport, dest_airport
-, dep_delay_minutes, cancelled
-, cancellation_code, weather_delay
-, dep_time, crs_dep_time
-, distance
+year,
+quarter,
+month,
+fl_date,
+op_unique_carrier,
+tail_num,
+op_carrier_fl_num,
+origin_airport_id,
+dest_airport_id,
+crs_dep_time,
+dep_time,
+dep_delay_new,
+cancelled,
+cancellation_code,
+air_time,
+distance,
+weather_delay
 )
 select 
-    "year"
-    , "quarter"
-    , "month"
-    , flight_date
-    , reporting_airline
-    , airline_tail_number
-    , airplane_id, flight_number_reporting_airline
-    , origin_airport, dest_airport
-    , dep_delay_minutes, cancelled
-    , cancellation_code, weather_delay
-    , dep_time, crs_dep_time
-    , distance
+    year,
+    quarter,
+    month,
+    fl_date,
+    op_unique_carrier,
+    tail_num,
+    op_carrier_fl_num,
+    origin_airport_id,
+    dest_airport_id,
+    crs_dep_time,
+    dep_time,
+    dep_delay_new,
+    cancelled,
+    cancellation_code,
+    air_time,
+    distance,
+    weather_delay
 from cleared_cte;
